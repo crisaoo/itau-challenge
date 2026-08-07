@@ -1,14 +1,10 @@
 package com.itau.challenge.model;
 
-import lombok.*;
+import lombok.Data;
 
 import java.time.OffsetDateTime;
 
-@Getter
-@Setter
-@RequiredArgsConstructor
-@EqualsAndHashCode
-@ToString
+@Data
 public class Transaction {
     // TODO: ORM
     private long id;
