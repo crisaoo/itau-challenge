@@ -1,6 +1,6 @@
 package com.itau.challenge.infra;
 
-import com.itau.challenge.exception.BadTransactionException;
+import com.itau.challenge.exceptions.BadTransactionException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
