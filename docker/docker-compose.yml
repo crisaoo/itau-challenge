@@ -1,10 +1,10 @@
 version: "3.7"
 services:
-  pg-docker:
+  postgres:
     image: postgres:14-alpine
-    container_name: dev-postgresql
+    container_name: postgres
     environment:
-      POSTGRES_DB: mydataset
+      POSTGRES_DB: database
       POSTGRES_PASSWORD: admin
     ports:
       - "5433:5432"
@@ -13,18 +13,18 @@ services:
     networks:
       - dev-network
 
-  pgadmin-docker:
+  pgAdmin:
     image: dpage/pgadmin4
-    container_name: dev-pgadmin
+    container_name: pgAdmin
     environment:
-      PGADMIN_DEFAULT_EMAIL: example@gmail.com
+      PGADMIN_DEFAULT_EMAIL: admin@gmail.com
       PGADMIN_DEFAULT_PASSWORD: admin
     ports:
       - "5050:80"
     volumes:
       - ./.data/pgadmin:/var/lib/pgadmin
     depends_on:
-      - pg-docker
+      - postgres
     networks:
       - dev-network
 
