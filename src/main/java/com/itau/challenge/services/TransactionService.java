@@ -1,8 +1,9 @@
-package com.itau.challenge.service;
+package com.itau.challenge.services;
 
-import com.itau.challenge.dto.TransactionDTO;
-import com.itau.challenge.exception.BadTransactionException;
-import com.itau.challenge.model.Transaction;
+import com.itau.challenge.dtos.TransactionDTO;
+import com.itau.challenge.exceptions.BadTransactionException;
+import com.itau.challenge.models.Transaction;
+import com.itau.challenge.repositories.TransactionRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,16 +13,16 @@ import java.time.OffsetDateTime;
 @RequiredArgsConstructor
 @Service
 public class TransactionService {
-//    private final TransactionRepository repository;
+    private final TransactionRepository repository;
 
     @Transactional
-    public void createTransaction(TransactionDTO dto){
+    public Transaction createTransaction(TransactionDTO dto){
         checkTransactionBody(dto);
 
         Transaction transaction = new Transaction();
         transaction.setValue(dto.value());
         transaction.setDateTime(dto.dateTime());
-//        return repository.createTransaction(dto);
+        return repository.save(transaction);
     }
 
     private void checkTransactionBody(TransactionDTO dto) {

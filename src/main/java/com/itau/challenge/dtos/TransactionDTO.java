@@ -1,4 +1,4 @@
-package com.itau.challenge.dto;
+package com.itau.challenge.dtos;
 
 import java.time.OffsetDateTime;
 
