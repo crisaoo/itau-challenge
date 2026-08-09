@@ -1,6 +1,7 @@
 package com.itau.challenge.controllers;
 
 import com.itau.challenge.dtos.TransactionDTO;
+import com.itau.challenge.models.Transaction;
 import com.itau.challenge.services.TransactionService;
 
 import lombok.RequiredArgsConstructor;
@@ -20,8 +21,7 @@ public class TransactionController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public void createTransaction(@RequestBody TransactionDTO transactionDTO){
-        // TODO: return the transaction created
-        service.createTransaction(transactionDTO);
+    public Transaction createTransaction(@RequestBody TransactionDTO transactionDTO){
+        return service.createTransaction(transactionDTO);
     }
 }
