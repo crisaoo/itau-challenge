@@ -1,14 +1,17 @@
 package com.itau.challenge.services;
 
+import com.itau.challenge.dtos.StatisticsDTO;
 import com.itau.challenge.dtos.TransactionDTO;
 import com.itau.challenge.exceptions.BadTransactionException;
 import com.itau.challenge.models.Transaction;
 import com.itau.challenge.repositories.TransactionRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.OffsetDateTime;
+import java.util.DoubleSummaryStatistics;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -23,6 +26,22 @@ public class TransactionService {
         transaction.setValue(dto.value());
         transaction.setDateTime(dto.dateTime());
         return repository.save(transaction);
+    }
+
+    @Transactional(readOnly = true)
+    public StatisticsDTO getStats(int seconds){
+        OffsetDateTime end = OffsetDateTime.now();
+        OffsetDateTime start = end.minusSeconds(seconds);
+
+        List<Transaction> transactions = repository.findByDateTimeBetween(start, end);
+        DoubleSummaryStatistics stats = transactions.stream().mapToDouble(Transaction::getValue).summaryStatistics();
+
+        return new StatisticsDTO(
+            (int) stats.getCount(),
+            stats.getSum(),
+            stats.getAverage(),
+            Double.isInfinite(stats.getMin())? 0.0 : stats.getMin(),
+            Double.isInfinite(stats.getMax())? 0.0 : stats.getMax());
     }
 
     private void checkTransactionBody(TransactionDTO dto) {

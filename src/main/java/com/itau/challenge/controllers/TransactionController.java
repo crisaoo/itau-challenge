@@ -1,5 +1,6 @@
 package com.itau.challenge.controllers;
 
+import com.itau.challenge.dtos.StatisticsDTO;
 import com.itau.challenge.dtos.TransactionDTO;
 import com.itau.challenge.models.Transaction;
 import com.itau.challenge.services.TransactionService;
@@ -7,11 +8,7 @@ import com.itau.challenge.services.TransactionService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -23,5 +20,11 @@ public class TransactionController {
     @PostMapping
     public Transaction createTransaction(@RequestBody TransactionDTO transactionDTO){
         return service.createTransaction(transactionDTO);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/statistic")
+    public StatisticsDTO getStats(@RequestParam(defaultValue = "60") int seconds){
+        return service.getStats(seconds);
     }
 }
