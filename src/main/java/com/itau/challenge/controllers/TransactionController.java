@@ -23,6 +23,12 @@ public class TransactionController {
     }
 
     @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping
+    public void deleteAllTransactions(){
+        service.deleteAllTransactions();
+    }
+
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/statistic")
     public StatisticsDTO getStats(@RequestParam(defaultValue = "60") int seconds){
         return service.getStats(seconds);

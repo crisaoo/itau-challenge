@@ -28,6 +28,11 @@ public class TransactionService {
         return repository.save(transaction);
     }
 
+    @Transactional
+    public void deleteAllTransactions() {
+        repository.deleteAll();
+    }
+
     @Transactional(readOnly = true)
     public StatisticsDTO getStats(int seconds){
         OffsetDateTime end = OffsetDateTime.now();
@@ -52,5 +57,4 @@ public class TransactionService {
         if(dto.value() < 0)
             throw new IllegalArgumentException("Transaction value cannot be negative");
     }
-
 }
