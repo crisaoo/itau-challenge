@@ -20,6 +20,8 @@ public class Transaction implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+
+    @Column(name = "transaction_value", nullable = false)
     private double value;
     private OffsetDateTime dateTime;
 }
