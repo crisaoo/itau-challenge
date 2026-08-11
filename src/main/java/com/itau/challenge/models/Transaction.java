@@ -2,8 +2,7 @@ package com.itau.challenge.models;
 
 import com.itau.challenge.dtos.TransactionDTO;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -12,6 +11,8 @@ import java.time.OffsetDateTime;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "tb_transaction")
 public class Transaction implements Serializable {
