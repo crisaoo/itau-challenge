@@ -21,11 +21,7 @@ public class TransactionService {
     @Transactional
     public Transaction createTransaction(TransactionDTO dto){
         checkTransactionBody(dto);
-
-        Transaction transaction = new Transaction();
-        transaction.setValue(dto.value());
-        transaction.setDateTime(dto.dateTime());
-        return repository.save(transaction);
+        return repository.save(new Transaction(dto));
     }
 
     @Transactional
