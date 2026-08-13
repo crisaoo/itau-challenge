@@ -37,12 +37,7 @@ public class TransactionService {
         List<Transaction> transactions = repository.findByDateTimeBetween(start, end);
         DoubleSummaryStatistics stats = transactions.stream().mapToDouble(Transaction::getValue).summaryStatistics();
 
-        return new StatisticsDTO(
-            (int) stats.getCount(),
-            stats.getSum(),
-            stats.getAverage(),
-            Double.isInfinite(stats.getMin())? 0.0 : stats.getMin(),
-            Double.isInfinite(stats.getMax())? 0.0 : stats.getMax());
+        return new StatisticsDTO(stats);
     }
 
     private void checkTransactionBody(TransactionDTO dto) {

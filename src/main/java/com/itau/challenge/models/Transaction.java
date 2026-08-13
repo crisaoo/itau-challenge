@@ -10,9 +10,7 @@ import java.util.UUID;
 import java.time.OffsetDateTime;
 
 @Getter
-@Setter
 @AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "tb_transaction")
 public class Transaction implements Serializable {

@@ -1,4 +1,14 @@
 package com.itau.challenge.dtos;
 
-public record StatisticsDTO(int count, double sum, double avg, double min, double max) {
+import java.util.DoubleSummaryStatistics;
+
+public record StatisticsDTO(long count, double sum, double avg, double min, double max) {
+    public StatisticsDTO(DoubleSummaryStatistics stats) {
+        this(stats.getCount(),
+            stats.getSum(),
+            stats.getAverage(),
+            Double.isInfinite(stats.getMin())? 0.0 : stats.getMin(),
+            Double.isInfinite(stats.getMax())? 0.0 : stats.getMax()
+        );
+    }
 }
