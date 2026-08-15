@@ -11,6 +11,7 @@ import java.time.OffsetDateTime;
 
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "tb_transaction")
 public class Transaction implements Serializable {

@@ -2,7 +2,7 @@ package com.itau.challenge.services;
 
 import com.itau.challenge.dtos.StatisticsDTO;
 import com.itau.challenge.dtos.TransactionDTO;
-import com.itau.challenge.exceptions.BadTransactionException;
+import com.itau.challenge.infra.exceptions.BadTransactionException;
 import com.itau.challenge.models.Transaction;
 import com.itau.challenge.repositories.TransactionRepository;
 
