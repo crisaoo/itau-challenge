@@ -1,8 +1,8 @@
 package com.itau.challenge.services;
 
-import com.itau.challenge.dtos.StatisticsDTO;
 import com.itau.challenge.dtos.TransactionDTO;
 import com.itau.challenge.infra.exceptions.BadTransactionException;
+import com.itau.challenge.infra.exceptions.UnprocessableEntityException;
 import com.itau.challenge.models.Transaction;
 import com.itau.challenge.repositories.TransactionRepository;
 
@@ -15,8 +15,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.OffsetDateTime;
-import java.util.List;
-import java.util.UUID;
 
 import static org.mockito.Mockito.*;
 
@@ -53,7 +51,7 @@ class TransactionServiceTest {
     @Test
     @DisplayName("Should throw a IllegalArgumentException when the date is in the future")
     void createTransactionCase3() {
-        IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        UnprocessableEntityException thrown = Assertions.assertThrows(UnprocessableEntityException.class, () -> {
            TransactionDTO dto = new TransactionDTO(3000.0, OffsetDateTime.now().plusSeconds(1));
            service.createTransaction(dto);
         });
@@ -65,7 +63,7 @@ class TransactionServiceTest {
     @Test
     @DisplayName("Should throw a IllegalArgumentException when the value is negative")
     void createTransactionCase4() {
-        IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        UnprocessableEntityException thrown = Assertions.assertThrows(UnprocessableEntityException.class, () -> {
             TransactionDTO dto = new TransactionDTO(-500.0, OffsetDateTime.now());
             service.createTransaction(dto);
         });
@@ -80,41 +78,4 @@ class TransactionServiceTest {
         service.deleteAllTransactions();
         verify(repository, times(1)).deleteAll();
     }
-
-    @Test
-    @DisplayName("Should calculate the stats correctly")
-    void getStatsCase1() {
-        OffsetDateTime now = OffsetDateTime.now();
-
-        List<Transaction> transactions = List.of(
-            new Transaction(UUID.randomUUID(), 100.00, now.minusSeconds(10)),
-            new Transaction(UUID.randomUUID(), 200.00, now.minusSeconds(20)),
-            new Transaction(UUID.randomUUID(), 300.00, now.minusSeconds(30))
-        );
-
-        when(repository.findByDateTimeBetween(any(), any())).thenReturn(transactions);
-
-        StatisticsDTO result = service.getStats(60);
-
-        Assertions.assertEquals(3, result.count());
-        Assertions.assertEquals(600.00, result.sum());
-        Assertions.assertEquals(200.00, result.avg());
-        Assertions.assertEquals(100.00, result.min());
-        Assertions.assertEquals(300.00, result.max());
-    }
-
-    @Test
-    @DisplayName("Should return 0 for all stats fields when there aren't transactions")
-    void getStatsCase2() {
-        when(repository.findByDateTimeBetween(any(), any())).thenReturn(List.of());
-
-        StatisticsDTO result = service.getStats(30);
-
-        Assertions.assertEquals(0, result.count());
-        Assertions.assertEquals(0.00, result.sum());
-        Assertions.assertEquals(0.00, result.avg());
-        Assertions.assertEquals(0.00, result.min());
-        Assertions.assertEquals(0.00, result.max());
-    }
-
 }

@@ -1,6 +1,5 @@
 package com.itau.challenge.services;
 
-import com.itau.challenge.dtos.StatisticsDTO;
 import com.itau.challenge.dtos.TransactionDTO;
 import com.itau.challenge.infra.exceptions.BadTransactionException;
 import com.itau.challenge.infra.exceptions.UnprocessableEntityException;
@@ -11,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
 import java.time.OffsetDateTime;
-import java.util.DoubleSummaryStatistics;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -31,16 +29,8 @@ public class TransactionService {
     }
 
     @Transactional(readOnly = true)
-    public StatisticsDTO getStats(int seconds){
-        OffsetDateTime end = OffsetDateTime.now();
-        OffsetDateTime start = end.minusSeconds(seconds);
-
-        List<Transaction> transactions = repository.findByDateTimeBetween(start, end);
-        DoubleSummaryStatistics stats = transactions.stream()
-                .mapToDouble(Transaction::getValue)
-                .summaryStatistics();
-
-        return new StatisticsDTO(stats);
+    public List<Transaction> getTransactionsByDateTimeBetween(OffsetDateTime start, OffsetDateTime end){
+        return repository.findByDateTimeBetween(start, end);
     }
 
     private void checkTransactionBody(TransactionDTO dto) {

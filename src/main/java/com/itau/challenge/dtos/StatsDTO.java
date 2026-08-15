@@ -2,8 +2,8 @@ package com.itau.challenge.dtos;
 
 import java.util.DoubleSummaryStatistics;
 
-public record StatisticsDTO(long count, double sum, double avg, double min, double max) {
-    public StatisticsDTO(DoubleSummaryStatistics stats) {
+public record StatsDTO(long count, double sum, double avg, double min, double max) {
+    public StatsDTO(DoubleSummaryStatistics stats) {
         this(stats.getCount(),
             stats.getSum(),
             stats.getAverage(),
