@@ -1,6 +1,5 @@
 package com.itau.challenge.controllers;
 
-import com.itau.challenge.dtos.StatisticsDTO;
 import com.itau.challenge.dtos.TransactionDTO;
 import com.itau.challenge.models.Transaction;
 import com.itau.challenge.services.TransactionService;
@@ -26,11 +25,5 @@ public class TransactionController {
     @DeleteMapping
     public void deleteAllTransactions(){
         service.deleteAllTransactions();
-    }
-
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/statistic")
-    public StatisticsDTO getStats(@RequestParam(defaultValue = "60") int seconds){
-        return service.getStats(seconds);
     }
 }

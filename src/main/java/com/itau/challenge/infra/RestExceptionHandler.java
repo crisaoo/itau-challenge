@@ -1,6 +1,7 @@
 package com.itau.challenge.infra;
 
-import com.itau.challenge.exceptions.BadTransactionException;
+import com.itau.challenge.infra.exceptions.BadTransactionException;
+import com.itau.challenge.infra.exceptions.UnprocessableEntityException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -10,15 +11,18 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @RestControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<RestBodyResponse> handleIllegalArgumentException(IllegalArgumentException ex){
-        RestBodyResponse body = new RestBodyResponse(HttpStatus.UNPROCESSABLE_CONTENT, ex.getMessage());
-        return ResponseEntity.status(body.getStatus()).body(body);
+    @ExceptionHandler(UnprocessableEntityException.class)
+    public ResponseEntity<RestBodyResponse> handleUnprocessableEntityException(UnprocessableEntityException ex){
+        return handleException(HttpStatus.UNPROCESSABLE_CONTENT, ex.getMessage());
     }
 
     @ExceptionHandler(BadTransactionException.class)
     public ResponseEntity<RestBodyResponse> handleBadTransactionException(BadTransactionException ex){
-        RestBodyResponse body = new RestBodyResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
+        return handleException(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
+    private ResponseEntity<RestBodyResponse> handleException(HttpStatus status, String message){
+        RestBodyResponse body = new RestBodyResponse(status, message);
         return ResponseEntity.status(body.getStatus()).body(body);
     }
 }

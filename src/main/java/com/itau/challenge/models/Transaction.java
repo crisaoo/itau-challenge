@@ -1,8 +1,8 @@
 package com.itau.challenge.models;
 
+import com.itau.challenge.dtos.TransactionDTO;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -10,7 +10,8 @@ import java.util.UUID;
 import java.time.OffsetDateTime;
 
 @Getter
-@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "tb_transaction")
 public class Transaction implements Serializable {
@@ -20,6 +21,13 @@ public class Transaction implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+
+    @Column(name = "transaction_value", nullable = false)
     private double value;
     private OffsetDateTime dateTime;
+
+    public Transaction(TransactionDTO dto) {
+        this.value = dto.value();
+        this.dateTime = dto.dateTime();
+    }
 }
