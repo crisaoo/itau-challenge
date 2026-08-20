@@ -8,10 +8,12 @@ import com.itau.challenge.repositories.TransactionRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.OffsetDateTime;
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class TransactionService {
@@ -19,18 +21,26 @@ public class TransactionService {
 
     @Transactional
     public Transaction createTransaction(TransactionDTO dto){
+        log.info("Creating Transaction: {}", dto);
         checkTransactionBody(dto);
-        return repository.save(new Transaction(dto));
+        Transaction transaction = repository.save(new Transaction(dto));
+        log.info("Transaction created: {}", transaction);
+        return transaction;
     }
 
     @Transactional
     public void deleteAllTransactions() {
+        log.info("Deleting all Transactions");
         repository.deleteAll();
+        log.info("All transactions deleted");
     }
 
     @Transactional(readOnly = true)
     public List<Transaction> getTransactionsByDateTimeBetween(OffsetDateTime start, OffsetDateTime end){
-        return repository.findByDateTimeBetween(start, end);
+        log.info("Getting transactions between {} and {}", start, end);
+        List<Transaction> transactions = repository.findByDateTimeBetween(start, end);
+        log.info("Transactions found: {}", transactions);
+        return transactions;
     }
 
     private void checkTransactionBody(TransactionDTO dto) {
