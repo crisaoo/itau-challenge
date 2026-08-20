@@ -104,7 +104,7 @@ class TransactionServiceTest {
     }
 
     @Test
-    @DisplayName("Should get a list of transactions in database")
+    @DisplayName("Should get a list of transactions between two dates in database")
     void getTransactionsByDateTimeBetween(){
         // arrange
         OffsetDateTime now = OffsetDateTime.now();
